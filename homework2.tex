@@ -1,0 +1,121 @@
+%%This is a very basic article template.
+%%There is just one section and two subsections.
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+\begin{document}
+\lstset{language=Java}
+\title{CS317 homework 2}
+\author{Yuchen Hou}
+\maketitle
+
+\section{Regular language}
+L is a regular language, therefore one of the following 4 cases is true. Each of
+those cases can ensure End(L, a) is a regular language.
+
+\subsection{if L == \{\}}
+$End(L, a) = \{\} \implies End(L, a)$ is a regular language.
+
+\subsection{if L == \{``"\}}
+$End(L, a) = \{\} \implies End(L, a)$ is a regular language.
+
+\subsection{if L == \{``x"\}}
+One of the following 2 cases is true, each of which ensures End(L, a) is a
+regular language.
+
+\subsubsection{if x == a}
+$End(L, a) = \{a\} \implies End(L, a)$ is a regular language.
+
+\subsubsection{if x != a}
+$End(L, a) = \{\} \implies End(L, a)$ is a regular language.
+
+\subsection{if L is generated from 2 regular languages A and B}
+One of the following 3 cases is true, each of which ensures End(L, a) is a
+regular language according to structual induction with assumptions End(A, a) and
+End(B, a) are regular languages.
+
+\subsubsection{$if L == A \cup B$}
+$End(L, a) = End(A \cup B, a) = End(A, a) \cup End(B, a) \implies End(L, a)$ is
+a regular language.
+
+\subsubsection{$if L == A B$}
+$End(L, a) = End(A B, a) = A End(B, a) \implies End(L, a)$ is a regular
+language.
+
+\subsubsection{$if L == A^*$}
+$End(L, a) = End(A^*, a) = A^* End(A, a) \implies End(L, a)$ is a regular
+language.
+
+\section{Regular expression}
+Define $A = (aa + bbb)^* c$. Obviously A is a regular language. Therefore,
+\[L = A^* \implies End(L, a)
+= A^* End(A, a)
+= A^* End((aa + bbb)^* c, a)
+= A^*\{\} = \{\}
+\]
+
+\section{Regular language}
+L is a regular language, therefore one of the following 3 cases is true. Each of
+those cases can ensure $L^r$ is a regular language.
+
+\subsection{if L == \{\}}
+$L^r = \{\} \implies L^r$ is a regular language.
+
+\subsection{if L == \{``"\}}
+$L^r = \{``"\} \implies End(L, a)$ is a regular language.
+
+\subsection{if L == \{x\}}
+$L^r = \{x\} \implies L^r$ is a regular language.
+
+\subsection{if L is generated from 2 regular languages A and B}
+One of the following 3 cases is true, each of which ensures $L^r$ is a
+regular language according to structual induction with assumptions $A^r$ and
+$B^r$ are regular languages.
+
+\subsubsection{$if L == A \cup B$}
+$L^r = (A \cup B)^r = A^r \cup B^r \implies L^r$ is a regular language.
+
+\subsubsection{$if L == A B$}
+$L^r = (A B)^r = B^r A^r \implies L^r$ is a regular language.
+
+\subsubsection{$if L == A^*$}
+$L^r = (A^*)^r = (A^r)^* \implies L^r$ is a regular language.
+
+\section{Regular expression}
+$(((aa + bbb)^*c)^*bc)^r = cb(c(aa + bbb)^*)^*$
+
+\section{Regular expression and shortest words}
+\{cab, cac\}
+
+\section{Regular expression and shortest words}
+\begin{lstlisting}
+remove all kleene stars and their operands;
+results = find_all_shortest_strings(regex r);
+
+Set<String> find_all_shortest_strings(regex r) {
+	if r is an empty set
+		return {};
+	if r is an empty string
+		return {""};
+	if r is a string with 1 character
+		return {r};
+	if (the operator in r with lowest priority is ., i.e. r = r1 . r2)
+		return concatennation(stringSet1, stringSet2);
+	if (the operator in r with lowest priority is +, i.e. r = r1 + r2) {
+		stringSet1 = find_all_shortest_strings(r1);
+		stringSet2 = find_all_shortest_strings(r2);
+		if (stringSet1 has shorter strings than stringSet2)
+			return stringSet1;
+		else if (stringSet2 has shorter strings than stringSet1)
+			return stringSet2;
+		else
+			return union(stringSet1, stringSet2);
+		}
+}
+\end{lstlisting}
+
+\end{document}

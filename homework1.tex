@@ -1,0 +1,75 @@
+%%This is a very basic article template.
+%%There is just one section and two subsections.
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+
+\begin{document}
+\title{CS317 homework 1}
+\author{Yuchen Hou}
+\maketitle
+
+\section{Regular expression}
+
+\subsection{0(10 + 0)*11}
+\begin{description}
+\item[example] 011
+\item[counter example] 00000
+\end{description}
+
+\subsection{(0 + 110)*1(01 + 1)*}
+\begin{description}
+\item[example] 1
+\item[counter example] 00000
+\end{description}
+
+\section{Regular expression}
+
+\subsection{all strings containing more than two 0’s}
+(0+1)*0(0+1)*0(0+1)*0(0+1)*
+
+\subsection{all strings do not contain 01}
+1*0*
+
+\subsection{all strings contain both 1011 and 0111 as substrings}
+(0+1)*1011(0+1)*0111(0+1)*\\
++(0+1)*10111(0+1)*\\
++(0+1)*0111(0+1)*1011(0+1)*\\
++(0+1)*0111011(0+1)*
+
+\subsection{all strings do not ended with 01}
+$\lambda$ + 0 + 1 + (0+1)*00 + (0+1)*10 + (0+1)*11
+
+\section{Language}
+
+\subsection{$L_1L_1^* = L_1^* L_1 L_1^*$}
+\begin{align*}
+LHS = L_1^+ = RHS
+\end{align*}
+
+\subsection{$(L_1^*L_2)^*L_1^* = (L_1 + L_2)^*$}
+\begin{align*}
+LHS
+&= (L_1^*L_2) \dots (L_1^*L_2) L_1^*\\
+&= (L_1 \dots L_1 L_2) \dots (L_1 \dots L_1 L_2) (L_1 \dots L_1)\\
+&= (L_1 \dots L_1 L_2) \dots (L_1 \dots L_1 L_2) (L_1 \dots L_1)\\
+&= (L_1 \dots L_1) L_2 (L_1 \dots L_1) L_2 \dots (L_1 \dots L_1)\\
+&= (L_1 \dots L_1) (L_2 \dots L_2) (L_1 \dots L_1) (L_2 \dots L_2) \dots\\
+&= RHS
+\end{align*}
+
+\section{Language}
+\begin{align*}
+example:L_2L_1\\
+L_2L_1 \subset RHS\\
+L_2L_1 \not\subset LHS
+\end{align*}
+
+\section{Regular expression and pets}
+$A^* + (B+C)^*B$
+
+\end{document}
