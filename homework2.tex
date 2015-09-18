@@ -58,7 +58,7 @@ Define $A = (aa + bbb)^* c$. Obviously A is a regular language. Therefore,
 \]
 
 \section{Regular language}
-L is a regular language, therefore one of the following 3 cases is true. Each of
+L is a regular language, therefore one of the following 4 cases is true. Each of
 those cases can ensure $L^r$ is a regular language.
 
 \subsection{if L == \{\}}
@@ -96,12 +96,12 @@ remove all kleene stars and their operands;
 results = find_all_shortest_strings(regex r);
 
 Set<String> find_all_shortest_strings(regex r) {
-	if r is an empty set
+	if (r == {})
 		return {};
-	if r is an empty string
+	if (r == "")
 		return {""};
-	if r is a string with 1 character
-		return {r};
+	if (r == "a")
+		return {"a"};
 	if (the operator in r with lowest priority is ., i.e. r = r1 . r2)
 		return concatennation(stringSet1, stringSet2);
 	if (the operator in r with lowest priority is +, i.e. r = r1 + r2) {
