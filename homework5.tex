@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+\begin{document}
+\lstset{language=Java}
+\title{CS317 homework 5}
+\author{Yuchen Hou}
+\maketitle
+\section{Language to automaton}
+Figure Attached.
+\section{Automaton to language}
+\begin{align*}
+R(i,j,k) &= R(i,j,k-1) + R(i,k,k-1)R(k,k,k-1)^*R(k,j,k-1)\\
+L(M) &= R(1,2,2) = R(1,2,1) + R(1,2,1)R(2,2,1)^*R(2,2,1)\\
+R(1,2,1) &= R(1,2,0) + R(1,1,0)R(1,1,0)^*R(1,2,0)\\
+R(2,2,1) &= R(2,2,0) + R(2,1,0)R(1,1,0)^*R(1,2,0)\\
+R(1,1,0) &= (a + \lambda)\\
+R(1,2,0) &= b\\
+R(2,1,0) &= b\\
+R(2,2,0) &= (c + \lambda)\\
+R(1,2,1) &= b + (a + \lambda)(a + \lambda)^*b\\
+R(2,2,1) &= (c + \lambda) + b(a + \lambda)^*b\\
+L(M) &= b + (a + \lambda)(a + \lambda)^*b + (b + (a + \lambda)(a +
+\lambda)^*b)((c + \lambda) + b(a + \lambda)^*b)^*((c + \lambda) + b(a +
+\lambda)^*b)\\
+\end{align*}
+\section{Pumping Lemma}
+Proof by contradiction with assumption L is regular. Let i be the integer in the
+pumping lemma. Pick $z = 0^i1^i$. $\vert z \vert > i \land z \in L$. From the
+lemma, z = uvw, $\vert uv \vert \leq i \land \vert v \vert \geq 1$. Therefore, u
+and v contain only 0's. From the lemma, $y = uvvw \in L$. But y contains more
+0's than 1's. This is a contradiction since y should contain less (or equal) 0's
+than 1's, according to the definition of L.
+Thus L is not regular.
+\section{Pumping lemma}
+Proof by contradiction with assumption L is regular. Let i be the integer in
+the pumping lemma. Pick $z = a^ib(a^ib)^Ra^ib$. $\vert z \vert > i \land z \in
+L$. From the lemma, z = uvw, $\vert uv \vert \leq i \land \vert v \vert \geq 1
+\land \vert w \vert < 4i$. Therefore, u and v contain only a's but w contains
+a's and b's. From the lemma, $y = uv^{1000000i}w \in L$ and the first half of y
+are all a's. Also, $y = xx^Rx$, so x contains only a's, so u contains only a's.
+So the pumping process removed those b's! This is a contradiction.
+Thus L is not regular.
+\section{Regular language}
+\subsection{}
+\subsubsection{Statement}
+Not regular.
+\subsubsection{Proof}
+Proof by contradiction with assumption L is regular. Let i be the integer in the
+pumping lemma. Pick $z = 0^i1^i0^{2i}$. $\vert z \vert > i \land z \in L$. From
+the lemma, z = uvw, $\vert uv \vert \leq i \land \vert v \vert \geq 1$.
+Therefore, u and v contain only 0's and $w = 0^j1^i0^{2i}$. From
+the lemma, by pumping 0's, $y = uv^{2i}w \in L$. In y, there are more than 2i
+0's before those 1's and 2i 0's after those 1's. This is a contradiction since the number
+of 0's before 1's should be less than the number of 0's after 1's, according to
+the definition of L.
+Thus L is not regular.
+\subsection{}
+\subsubsection{Statement}
+Regular.
+\subsubsection{Proof}
+This language has a regular expression $r = 0^40^*$.
+Thus L is regular.
+\subsection{}
+\subsubsection{Statement}
+Regular.
+\subsubsection{Proof}
+Regular language $K = \{(0+1)^*\} $ is a subset of L (when x = $\lambda$).
+However, as $\Sigma = \{0, 1\}$. L must also be a subset of K.
+So L = K and L is regular.
+\subsection{}
+\subsubsection{Statement}
+Not regular.
+\subsubsection{Proof}
+Proof by contradiction with assumption L is regular. Let i be the number in
+pumping lemma. Pick $z = 0^{i+1}1^i \in L$. From the lemma, $z = uvw \land \vert
+uv \vert \leq i \land \vert v \vert \geq 1$, so u and v contain only 0's. From
+the lemma, $y = uw = 0^j1^i \in L$, where $j \leq i$. This is a contradiction
+since j should be greater than i, according to the definition of L.
+\end{document}
