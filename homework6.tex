@@ -1,0 +1,118 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+\begin{document}
+\lstset{language=Java}
+\title{CS317 homework 6}
+\author{Yuchen Hou}
+\maketitle
+\section{Minimal finite automaton}
+Figure Attached.
+\section{Closure property: set operation}
+\begin{lstlisting}
+Boolean wordXExists(FiniteAutomaton M1, FiniteAutomaton M2) {
+	RegularLanguage L1 = L(M1); // Kleene theorem
+	RegularLanguage L2 = L(M2); // Kleene theorem
+	RegularLanguage L = L1 - L2; // closure propertiy: set operation
+	if (L.isEmpty()) {
+		return false;
+	} else {
+		return true;
+	}
+}
+void main() {
+	// checking whether there is a word x such that M1 accepts x
+	// but M2 does not accept x
+	wordXExists(M1, M2);
+	// checking whether there is a word x such that M2 accepts x
+	// but M1 does not accept x
+	wordXExists(M2, M1);
+}
+\end{lstlisting}
+\section{Closure property: reverse}
+From Kleene theorem, L is regular $\iff \exists$ finite automaton M =
+($\Sigma, Q, q_0, \delta, F$) and M accepts L. We can convert M into another
+finite automaton to accept $L^r$ with the following reverse method:
+\begin{lstlisting}
+class FiniteAutomaton M {
+	Set<Char> Sigma; // set of characters
+	Set<State> Q; // set of states
+	State q0; // initial state
+	Map<(State, State), Char> delta; // transition function
+	Set<State> F; // set of final states
+
+	void reverse() {
+		State newAcceptingState = new State();
+		for (State q: F) {
+			delta.put((q, newAcceptingState), lambda);
+		}
+		F.clear();
+		F.add(newAcceptingState);
+		Q.add(newAcceptingState);
+		State newInitialState = F.iterator().next();
+		F.clear();
+		F.add(q0);
+		q0 = newInitialState;
+		delta.reverseAllTransitionDirections();
+	}
+}
+\end{lstlisting}
+$\forall x \in L$, $M^r$ accepts $x^r$. Therefore, finite automaton $M^r$
+accepts $L^r$. From Kleene theorem, $L^r$ is regular.
+\section{Closure property: prefix}
+From Kleene theorem, L is regular $\iff \exists$ finite automaton M =
+($\Sigma, Q, q_0, \delta, F$) and M accepts L. We can convert M into another
+finite automaton to accept Prefix(L) with the following prefix method:
+\begin{lstlisting}
+class FiniteAutomaton M {
+	Set<Char> Sigma; // set of characters
+	Set<State> Q; // set of states
+	State q0; // initial state
+	Map<(State, State), Char> delta; // transition function
+	Set<State> F; // set of final states
+
+	void prefix() {
+		State newAcceptingState = new State();
+		for (State q: Q) {
+			if (q.hasPathToAnAcceptingState() {
+				delta.put((q, newAcceptingState), lambda);
+			}
+		}
+		F.add(newAcceptingState);
+		Q.add(newAcceptingState);
+	}
+}
+\end{lstlisting}
+Finite automaton M can be converted into a new automaton to accept Prefix(L)
+using the prefix method. From Kleene theorem, Prefix(L) is regular.
+\section{Closure property: half}
+From previous 2 answers, if L is regular, Prefix(L) and Prefix($L^r$) are
+both regular, and there are finite automata $M_1$ and $M_2$ that accept them:
+\begin{align*}
+Prefix(L) =& L(M_1)\\
+Prefix(L^r) =& L(M_2)\\
+M_1 =& (\Sigma, Q, {q_0}_1, \delta_1, F_1)\\
+M_2 =& (\Sigma, Q, {q_0}_2, \delta_2, F_2)
+\end{align*}
+For every transition $\delta(q_1, \sigma) = q_2$ in $M_2$, where
+$\sigma \neq \lambda$, add transitions $\delta(q_1, \sigma_i) = q_2, \forall
+\sigma_i \in \Sigma$ to $M_2$. Now $M_2$ is converted to a non-deterministic
+finite automaton, we can convert it to a deterministic finite automaton $M_3$:
+\begin{align*}
+M_3 = (\Sigma, Q_3, {q_0}_3, \delta_3, F_3)
+\end{align*}
+Now we can construct a finite automaton $M_4 = (\Sigma,
+Q_4, {q_0}_4, \delta_4, F_4)$ to accept the language half(L), where
+\begin{align*}
+\Sigma =& \Sigma\\
+Q_4 =& QQ_3\\
+{q_0}_4 =& {q_0}_1{q_0}_3\\
+\delta_4(qq_3, \sigma) =& \delta_1(q, \sigma)\delta_3(q_3, \sigma)\\
+F_4 =& \{qq_3 : \forall q \in Q, q_3 \in Q_3 s.t. q \in q_3 \}
+\end{align*}
+From Kleene theorem, half(L) is regular.
+\end{document}
