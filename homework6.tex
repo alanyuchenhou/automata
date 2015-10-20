@@ -12,27 +12,10 @@
 \maketitle
 \section{Minimal finite automaton}
 Figure Attached.
-\section{Closure property: set operation}
-\begin{lstlisting}
-Boolean wordXExists(FiniteAutomaton M1, FiniteAutomaton M2) {
-	RegularLanguage L1 = L(M1); // Kleene theorem
-	RegularLanguage L2 = L(M2); // Kleene theorem
-	RegularLanguage L = L1 - L2; // closure propertiy: set operation
-	if (L.isEmpty()) {
-		return false;
-	} else {
-		return true;
-	}
-}
-void main() {
-	// checking whether there is a word x such that M1 accepts x
-	// but M2 does not accept x
-	wordXExists(M1, M2);
-	// checking whether there is a word x such that M2 accepts x
-	// but M1 does not accept x
-	wordXExists(M2, M1);
-}
-\end{lstlisting}
+\section{Closure property: union, intersection, negation}
+Construct finite automaton $M = M_1 \cap \overline{M_2} \cup \overline{M_1}
+\cap M_2$. If $L(M) \neq \emptyset$, an x exists; otherwise, no x can exist. The
+union, intersection and negation methods have been formulated in class.
 \section{Closure property: reverse}
 From Kleene theorem, L is regular $\iff \exists$ finite automaton M =
 ($\Sigma, Q, q_0, \delta, F$) and M accepts L. We can convert M into another
@@ -91,28 +74,27 @@ Finite automaton M can be converted into a new automaton to accept Prefix(L)
 using the prefix method. From Kleene theorem, Prefix(L) is regular.
 \section{Closure property: half}
 From previous 2 answers, if L is regular, Prefix(L) and Prefix($L^r$) are
-both regular, and there are finite automata $M_1$ and $M_2$ that accept them:
+both regular, and there are finite automata $M_0, M_1, M_2$ that accept
+them:
 \begin{align*}
+L =& L(M)\\
 Prefix(L) =& L(M_1)\\
-Prefix(L^r) =& L(M_2)\\
-M_1 =& (\Sigma, Q, {q_0}_1, \delta_1, F_1)\\
-M_2 =& (\Sigma, Q, {q_0}_2, \delta_2, F_2)
+Prefix(L^r) =& L(M_2)
 \end{align*}
-For every transition $\delta(q_1, \sigma) = q_2$ in $M_2$, where
-$\sigma \neq \lambda$, add transitions $\delta(q_1, \sigma_i) = q_2, \forall
-\sigma_i \in \Sigma$ to $M_2$. Now $M_2$ is converted to a non-deterministic
-finite automaton, we can convert it to a deterministic finite automaton $M_3$:
-\begin{align*}
-M_3 = (\Sigma, Q_3, {q_0}_3, \delta_3, F_3)
-\end{align*}
-Now we can construct a finite automaton $M_4 = (\Sigma,
-Q_4, {q_0}_4, \delta_4, F_4)$ to accept the language half(L), where
-\begin{align*}
-\Sigma =& \Sigma\\
-Q_4 =& QQ_3\\
-{q_0}_4 =& {q_0}_1{q_0}_3\\
-\delta_4(qq_3, \sigma) =& \delta_1(q, \sigma)\delta_3(q_3, \sigma)\\
-F_4 =& \{qq_3 : \forall q \in Q, q_3 \in Q_3 s.t. q \in q_3 \}
-\end{align*}
-From Kleene theorem, half(L) is regular.
+Now the idea is to build an FA $M_4$ to accept half(L), by using $M_1$ to read
+x in forward order and using $M_2$ to read every suffix y of L with the same
+length as x in backward order. If $M_1, M_2$ ever once run into a same accepting
+state then $M_4$ should accept x. Essentially, this is a bidirectional search
+on the graph representation of $M$: $M_1$ starts from initial state and
+take actions based on input characters from x, while $M_2$ starts from final
+state and do breadth first search, maintaining the speed so that the search
+depth equals the number of actions taken by $M1$. Upon $M_1$ finishes reading x,
+stop the search and check if $M_1$ is in one of $M_2$'s frontier states. If yes,
+then x already satisfies the condition and must be in half(L). To formally
+construct $M_4$, we need to convert $M_2$ into $M_3$: for every transition
+$\delta(q_1, \sigma) = q_2$ in $M_2$, where $\sigma \neq \lambda$, add
+transitions $\delta(q_1, \sigma_i) = q_2, \forall \sigma_i \in \Sigma$ to $M_2$
+and then convert it to a deterministic finite automaton $M_3$. Now $M_3$ can
+read x and do breadth first search. Finally, we can construct a finite automaton
+$M_4 = M_1 \cap M_3$, which accepts half(L). From Kleene theorem, half(L) is regular.
 \end{document}
