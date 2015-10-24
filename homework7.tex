@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+\begin{document}
+\lstset{language=Java}
+\title{CS317 homework 7}
+\author{Yuchen Hou}
+\maketitle
+\section{Context free grammar}
+$L = \{0^m1^n: m \geq 0, n \geq 0, mn \neq 0\}$
+\section{Context free grammar}
+$L = \{w: w \in \{0, 1\}^* \}$
+\section{Context free grammar}
+$L = \{0^m1^{2m}: m \geq 0\}$
+\section{Context free grammar}
+$S \to 1S | 0S |10$
+\section{Context free grammar}
+\begin{align*}
+S &\to AB\\
+A &\to 000A11 | 00011\\
+B &\to 0B1 | 01
+\end{align*}
+\section{Context free grammar}
+\begin{align*}
+S &\to AB\\
+A &\to 0A | 0\\
+B &\to 00B1 | \lambda
+\end{align*}
+\section{Context free grammar}
+\begin{align*}
+S &\to BC\\
+C &\to 1C | 1\\
+B &\to 00B1 | \lambda
+\end{align*}
+\section{Context free grammar}
+\begin{align*}
+S &\to AB | BC\\
+A &\to 0A | 0\\
+C &\to 1C | 1\\
+B &\to 00B1 | \lambda
+\end{align*}
+\section{Context free grammar: eliminate $\lambda$ productions}
+Remove $A \to \lambda, B \to \lambda$.
+\begin{align*}
+S &\to ASB | SB | AS | AB | B | A | ab | \lambda \\
+A &\to AS | S | a \\
+B &\to SB | S | A | b
+\end{align*}
+\section{Context free grammar: eliminate unit productions}
+\begin{align*}
+S &\to a | SA | SB | b | SB | ab \\
+A &\to a | SA \\
+B &\to a | SA | SB | b
+\end{align*}
+\section{Context free grammar: Chomsky normal form}
+\begin{align*}
+S &\to AC | AD | AB | EF \\
+E &\to a\\
+F &\to b\\
+C &\to FG\\
+G &\to BH\\
+H &\to ES\\
+D &\to SB\\
+A &\to FB | a\\
+B &\to SI | b\\
+I &\to BF
+\end{align*}
+\end{document}
