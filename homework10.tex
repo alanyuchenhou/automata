@@ -66,7 +66,7 @@ modifying the stack top as follows:
 \begin{align*}
 \gamma_1, \gamma_2, \gamma_3 &\in \Gamma\\
 \delta(q_1, \gamma_1, \gamma_2) &= (q_2, \gamma_3 \gamma_2) \text{ //type 2}\\
-\delta(q_1, \gamma_1, \gamma_2) &= (q_2, \gamma_3) \text{ //type 3}
+\delta(q_1, \Lambda, \gamma_2) &= (q_2, \gamma_3) \text{ //type 3}
 \end{align*}
 The PDA needs to simulate stage 2 by reading nothing, popping symbols from
 stack, modifying the stack top as follows:
@@ -79,7 +79,7 @@ Note that type 3 transition is not atomic, but a short hand of 2 consecutive
 transitions as follows:
 \begin{align*}
 \gamma_1, \gamma_2, \gamma_3, \gamma_9 &\in \Gamma\\
-\delta(q_1, \gamma_1, \gamma_2) &= (q_{\gamma_3, q_2}, \Lambda)\\
+\delta(q_1, \Lambda, \gamma_2) &= (q_{\gamma_3, q_2}, \Lambda)\\
 \delta(q_{\gamma_3, q_2}, \Lambda, \gamma_2) &= (q_2, \gamma_3\gamma_2)
 \end{align*}
 In the initial state, to simulate head pointing to the first symbol of the tape,
@@ -95,24 +95,30 @@ the stack is empty.
 \end{align*}
 For a 2-stack PDA to simulate this, it needs to store the tape in its
 2 stacks (left stack and right stack): simulate the part of the tape to the left
-of the head(inclusive, with the first symbol at stack bottom, to simulate the
-head symbol with the top of left stack) with the left stack, and simulate the
-part of the tape to the right of the head with the right stack(exclusive, with
-the last symbol at the stack bottom). Then the PDA can simulate 3 types of
-Turing machine transitions as follows:
+of the head(exclusive, with the first symbol at stack bottom) with the left
+stack, and simulate the part of the tape to the right of the head with the
+right stack(inclusive, with the last symbol at the stack bottom), simulate
+the head symbol with the top of right stack. Then the PDA can simulate 3 types
+of Turing machine transitions as follows:
 \begin{align*}
 \gamma_1, \gamma_2, \gamma_3 &\in \Gamma\\
-\delta(q_1, \gamma_1, \gamma_1, \gamma_2) &= (q_2, \Lambda, \gamma_3 \gamma_2) \text{ //type 1}\\
-\delta(q_1, \gamma_1, \gamma_1, \gamma_2) &= (q_2, \gamma_3 \gamma_1, \Lambda) \text{ //type 2}\\
-\delta(q_1, \gamma_1, \gamma_1, \gamma_2) &= (q_2, \gamma_3, \gamma_2) \text{ //type 3}
+\delta(q_1, \Lambda, \gamma_1, \gamma_2) &= (q_2, \Lambda, \gamma_3 \gamma_2)
+\text{ //type 1}\\
+\delta(q_1, \Lambda, \gamma_1, \gamma_2) &= (q_2, \gamma_3 \gamma_1, \Lambda)
+\text{ //type 2}\\
+\delta(q_1, \Lambda, \gamma_1, \gamma_2) &= (q_2, \gamma_3, \gamma_2) \text{
+//type 3}
 \end{align*}
 Note that type 3 transition is not atomic, but a short hand of 2 consecutive
 transitions as follows:
 \begin{align*}
 \gamma_1, \gamma_2, \gamma_3, \gamma_9 &\in \Gamma\\
-\delta(q_1, \gamma_1, \gamma_1, \gamma_2) &= (q_{\gamma_3, q_2}, \Lambda, \gamma_2)\\
-\delta(q_{\gamma_3, q_2}, \Lambda, \gamma_9, \gamma_2) &= (q_2, \gamma_3\gamma_9, \gamma_2)
+\delta(q_1, \Lambda, \gamma_1, \gamma_2) &= (q_{\gamma_3, q_2}, \Lambda,
+\gamma_2)\\
+\delta(q_{\gamma_3, q_2}, \Lambda, \gamma_9, \gamma_2) &= (q_2,
+\gamma_3\gamma_9, \gamma_2)
 \end{align*}
-In the initial state, to simulate head pointing to the first symbol of the tape,
-the left stack is empty, and the right stack if filled with tape symbols.
+To simulate the initial state, where head points to the first symbol of
+the tape, set the left stack is empty, and the right stack filled with tape
+symbols.
 \end{document}
