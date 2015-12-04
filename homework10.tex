@@ -1,0 +1,118 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+\begin{document}
+\lstset{language=Java}
+\title{CS317 homework 10}
+\author{Yuchen Hou}
+\maketitle
+
+\section{Turing machine and recursively enumerable language}
+\begin{align*}
+\gamma &= b, c\\
+\delta(q_0, \gamma) &= (q_1, \gamma, R) \text{ // find 1 b or
+1 c}\\
+\delta(q_1, \gamma) &= (q_1, \gamma, R) \text{ // skip all b and
+c}\\
+\delta(q_1, \#) &= (q_2, \#, R) \text{ // and find \#}\\
+\delta(q_2, a) &= (q_3, a, R) \text{ // find 1 a}\\
+\delta(q_3, a) &= (q_3, a, R) \text{ // skip all a}\\
+\delta(q_3, B) &= (q_f, B, S) \text{ // and find the end, enter final state,
+accept input}
+\end{align*}
+
+\section{Turing machine and recursively enumerable language}
+\begin{align*}
+\gamma &= a, b\\
+\gamma_1 &= a, b, \#\\
+\delta(q_0, \gamma) &= (q_1, \gamma, S) \text{ // assert the first symbol is a
+or b}\\
+&\text{ // begin: while (first symbol != \#)}\\
+\delta(q_1, \gamma) &= (q_{\gamma,+}, B, R) \text{ // read the first symbol,
+remember it, remove it from string}\\
+\delta(q_{\gamma,+}, \gamma_1) &= (q_{\gamma,+}, \gamma_1, R) \text{ // skip all
+symbols}\\
+\delta(q_{\gamma,+}, B) &= (q_{\gamma,-}, B, L) \text{ // and find the last
+symbol}\\
+\delta(q_{\gamma,-}, \gamma) &= (q_2, B, L) \text{ // assert the last symbol is
+the first symbol, remove it from string}\\
+\delta(q_2, \gamma_1) &= (q_2, \gamma_1, L) \text{ // skip all symbols}\\
+\delta(q_2, B) &= (q_1, B, R) \text{ // and find the first symbol}\\
+&\text{ // end: while}\\
+\delta(q_1, \#) &= (q_3, \#, R) \text{ // skip the \#}\\
+\delta(q_3, B) &= (q_f, B, S) \text{// and assert no leftover symbol after \#,
+enter final state}
+\end{align*}
+
+\section{PDA simulating one-turn Turing machine}
+ A one-turn Turing machine has 3 types of transitions:
+\begin{align*}
+\gamma_1, \gamma_3 &\in \Gamma\\
+\delta(q_1, \gamma_1) &= (q_2, \gamma_3, L) \text{ //type 1}\\
+\delta(q_1, \gamma_1) &= (q_2, \gamma_3, R) \text{ //type 2}\\
+\delta(q_1, \gamma_1) &= (q_2, \gamma_3, S) \text{ //type 3}
+\end{align*}
+and 2 stages:
+\begin{enumerate}
+  \item move to the right (only 2nd and 3rd type of transitions above)
+  \item move to the left (only 1st and 3rd type of transitions above)
+\end{enumerate}
+The PDA needs to simulate stage 1 by reading input, pushing symbols to stack,
+modifying the stack top as follows:
+\begin{align*}
+\gamma_1, \gamma_2, \gamma_3 &\in \Gamma\\
+\delta(q_1, \gamma_1, \gamma_2) &= (q_2, \gamma_3 \gamma_2) \text{ //type 2}\\
+\delta(q_1, \gamma_1, \gamma_2) &= (q_2, \gamma_3) \text{ //type 3}
+\end{align*}
+The PDA needs to simulate stage 2 by reading nothing, popping symbols from
+stack, modifying the stack top as follows:
+\begin{align*}
+\gamma_1, \gamma_2, \gamma_3 &\in \Gamma\\
+\delta(q_1, \Lambda, \gamma_2) &= (q_2, \Lambda) \text{ //type 1}\\
+\delta(q_1, \Lambda, \gamma_2) &= (q_2, \gamma_3) \text{ //type 3}
+\end{align*}
+Note that type 3 transition is not atomic, but a short hand of 2 consecutive
+transitions as follows:
+\begin{align*}
+\gamma_1, \gamma_2, \gamma_3, \gamma_9 &\in \Gamma\\
+\delta(q_1, \gamma_1, \gamma_2) &= (q_{\gamma_3, q_2}, \Lambda)\\
+\delta(q_{\gamma_3, q_2}, \Lambda, \gamma_2) &= (q_2, \gamma_3\gamma_2)
+\end{align*}
+In the initial state, to simulate head pointing to the first symbol of the tape,
+the stack is empty.
+
+\section{2-stack PDA simulating Turing machine}
+ A Turing machine has 3 types of transitions:
+\begin{align*}
+\gamma_1, \gamma_3 &\in \Gamma\\
+\delta(q_1, \gamma_1) &= (q_2, \gamma_3, L) \text{ //type 1}\\
+\delta(q_1, \gamma_1) &= (q_2, \gamma_3, R) \text{ //type 2}\\
+\delta(q_1, \gamma_1) &= (q_2, \gamma_3, S) \text{ //type 3}
+\end{align*}
+For a 2-stack PDA to simulate this, it needs to store the tape in its
+2 stacks (left stack and right stack): simulate the part of the tape to the left
+of the head(inclusive, with the first symbol at stack bottom, to simulate the
+head symbol with the top of left stack) with the left stack, and simulate the
+part of the tape to the right of the head with the right stack(exclusive, with
+the last symbol at the stack bottom). Then the PDA can simulate 3 types of
+Turing machine transitions as follows:
+\begin{align*}
+\gamma_1, \gamma_2, \gamma_3 &\in \Gamma\\
+\delta(q_1, \gamma_1, \gamma_1, \gamma_2) &= (q_2, \Lambda, \gamma_3 \gamma_2) \text{ //type 1}\\
+\delta(q_1, \gamma_1, \gamma_1, \gamma_2) &= (q_2, \gamma_3 \gamma_1, \Lambda) \text{ //type 2}\\
+\delta(q_1, \gamma_1, \gamma_1, \gamma_2) &= (q_2, \gamma_3, \gamma_2) \text{ //type 3}
+\end{align*}
+Note that type 3 transition is not atomic, but a short hand of 2 consecutive
+transitions as follows:
+\begin{align*}
+\gamma_1, \gamma_2, \gamma_3, \gamma_9 &\in \Gamma\\
+\delta(q_1, \gamma_1, \gamma_1, \gamma_2) &= (q_{\gamma_3, q_2}, \Lambda, \gamma_2)\\
+\delta(q_{\gamma_3, q_2}, \Lambda, \gamma_9, \gamma_2) &= (q_2, \gamma_3\gamma_9, \gamma_2)
+\end{align*}
+In the initial state, to simulate head pointing to the first symbol of the tape,
+the left stack is empty, and the right stack if filled with tape symbols.
+\end{document}
