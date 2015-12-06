@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+\begin{document}
+\lstset{language=Java}
+\title{CS317 homework 11}
+\author{Yuchen Hou}
+\maketitle
+
+\section{RE}
+\subsection{RE vs R}
+We have the following observations:
+\begin{align*}
+L \in RE &\implies \exists TM \ M_1 \land \forall w \in L \ M_1 \ accepts \ w\\
+\overline{L} \in RE &\implies \exists TM \ M_2 \land \forall w \in \overline{L}
+\ M_2 \ accepts \ w\\
+&\implies \exists TM \ M_2 \land \forall w \notin L \ M_2 \ accepts \ w
+\end{align*}
+Now we construct TM M to recognize L:
+\begin{enumerate}
+  \item $\forall w$ M copies it to the tapes of $M_1$ and $M_2$
+  \item M runs $M_1$ and $M_2$ in parallel
+  \item if $M_1 $ accepts w($\iff w \in L$), M accepts w
+  \item if $M_2$ accepts w($\iff w \in \overline{L}$), M rejects w
+\end{enumerate}
+As M accepts L and always halts, L is recursive.
+\subsection{RE closure property}
+Proof by contradiction with assumption: REs are closed under complement. Pick
+L, such that $L \in RE \land L\notin R$. From the assumption, $\overline{L} \in
+RE$. From the previous proof, $L \in RE \land \overline{L} \in RE \implies L
+\in R$, which contradicts $L\notin R$. Therefore, REs are not closed under
+complement.
+
+\section{R closure property: complement}
+$\forall L \in R \ \exists TM \ M$ such that M recognizes L, which means:
+\begin{enumerate}
+  \item $\forall w \in L$, M accepts w
+  \item $\forall w \notin L$, M rejects w
+\end{enumerate}
+Now we construct TM N to recognize $\overline{L}$:
+\begin{enumerate}
+  \item $\forall w$ N copies it to the tape of M
+  \item N runs M
+  \item if M accepts w($\iff w \in L \iff w \notin \overline{L}$), N rejects w
+  \item if M rejects w($\iff w \notin L \iff w \in \overline{L}$), N accepts w
+\end{enumerate}
+As N accepts $\overline{L}$ and always halts, $\overline{L} \in R$. As $\forall
+L \in R \ \overline{L} \in R$, Rs are closed under complement.
+
+\section{Equivalent Turing machines}
+For any TM M, we can get a new TM N such that L(M) = L(N), by modifying M this
+way:
+\begin{enumerate}
+  \item create a state $q \notin Q$
+  \item add transition $\delta(q_0, \gamma) = (q, \gamma, S)$
+  \item add transition $\delta(q, \gamma) = (q_0, \gamma, S)$
+\end{enumerate}
+where $\gamma \in \Gamma$. Then by repeating this modification we can get
+infinitely many TMs such that they all accept the same language. This means
+there are infinite number of equivalent programs to any program (a trivial
+example is programs that differ only in comments).
+
+\section{R and decidable problem}
+To prove the problem is decidable, it is equivalent to prove:
+L = \{M: M is TM and M contains the same number of L-instructions and
+R-instructions\} is R. Now we construct a counter machine N to accept L:
+\begin{enumerate}
+  \item N has 2 counters: x and y
+  \item N reads the encoding of M: for each R-instruction, increment x by 1; for
+  each L-instruction, increment y by 1;
+  \item after reading the encoding of M, N repeatedly decrements x and y by 1
+  and test them against 0;
+  \item when x is 0, if y is 0, N accepts input; if y is not 0, N rejects input;
+\end{enumerate}
+Therefore, N (and a equivalent TM) recognizes L. Then L is R and the problem is
+decidable.
+
+\section{R closure property: intersection}
+To prove the problem is decidable, it is equivalent to prove:
+L = \{M: M is TM and there is a TM M' such that M' contains the same number of
+L-instructions and R-instructions and L(M') = L(M)\} is R.
+
+\end{document}
