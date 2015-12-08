@@ -25,7 +25,7 @@ Now we construct TM M to recognize L:
   \item $\forall w$ M copies it to the tapes of $M_1$ and $M_2$
   \item M runs $M_1$ and $M_2$ in parallel
   \item if $M_1 $ accepts w($\iff w \in L$), M accepts w
-  \item if $M_2$ accepts w($\iff w \in \overline{L}$), M rejects w
+  \item if $M_2$ accepts w($\iff w \notin L$), M rejects w
 \end{enumerate}
 As M accepts L and always halts, L is recursive.
 \subsection{RE closure property}
@@ -67,7 +67,7 @@ example is programs that differ only in comments).
 \section{R and decidable problem}
 To prove the problem is decidable, it is equivalent to prove:
 L = \{M: M is TM and M contains the same number of L-instructions and
-R-instructions\} is R. Now we construct a counter machine N to accept L:
+R-instructions\} is R. Now we construct a counter machine N to recognize L:
 \begin{enumerate}
   \item N has 2 counters: x and y
   \item N reads the encoding of M: for each R-instruction, increment x by 1; for
@@ -79,9 +79,19 @@ R-instructions\} is R. Now we construct a counter machine N to accept L:
 Therefore, N (and a equivalent TM) recognizes L. Then L is R and the problem is
 decidable.
 
-\section{R closure property: intersection}
+\section{R and decidable problem}
 To prove the problem is decidable, it is equivalent to prove:
 L = \{M: M is TM and there is a TM M' such that M' contains the same number of
-L-instructions and R-instructions and L(M') = L(M)\} is R.
-
+L-instructions and R-instructions and L(M') = L(M)\} is R. Now we construct a TM
+$M_0$ to recognize L:
+\begin{enumerate}
+  \item construct TM $M_1$ to recognize R $L_1$ = \{M: M is TM and L(M') =
+  L(M)\}
+  \item construct TM $M_2$ to recognize R $L_2$ = \{M: M is TM and M contains
+  the same number of L-instructions and R-instructions\}
+  \item From the closure property of R, $L_3 = L_1 \cap L_2 \in R$
+  \item $\forall M$, if $L_3$ is not empty, $M_0$ accepts M, otherwise $M_0$
+  rejects M
+\end{enumerate}
+Therefore $M_0$ recognizes L, and L is R and the problem is decidable.
 \end{document}
