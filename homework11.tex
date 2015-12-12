@@ -15,19 +15,17 @@
 \subsection{RE vs R}
 We have the following observations:
 \begin{align*}
-L \in RE &\implies \exists TM \ M_1 \land \forall w \in L \ M_1 \ accepts \ w\\
-\overline{L} \in RE &\implies \exists TM \ M_2 \land \forall w \in \overline{L}
-\ M_2 \ accepts \ w\\
-&\implies \exists TM \ M_2 \land \forall w \notin L \ M_2 \ accepts \ w
+L \in RE &\implies \exists TM \ M_1 : L = L(M_1) \\
+\overline{L} \in RE &\implies \exists TM \ M_2 : \overline{L} = L(M_2)
 \end{align*}
 Now we construct TM M to recognize L:
 \begin{enumerate}
-  \item $\forall w$ M copies it to the tapes of $M_1$ and $M_2$
-  \item M runs $M_1$ and $M_2$ in parallel
+  \item $\forall$ input w, M runs $M_1$ and $M_2$ in parallel on w
   \item if $M_1 $ accepts w($\iff w \in L$), M accepts w
-  \item if $M_2$ accepts w($\iff w \notin L$), M rejects w
+  \item if $M_2$ accepts w($\iff w \in \overline{L} \iff w \notin L $), M
+  rejects w
 \end{enumerate}
-As M accepts L and always halts, L is recursive.
+M recognizes L $\implies L \in R$.
 \subsection{RE closure property}
 Proof by contradiction with assumption: REs are closed under complement. Pick
 L, such that $L \in RE \land L\notin R$. From the assumption, $\overline{L} \in

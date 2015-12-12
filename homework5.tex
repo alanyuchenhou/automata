@@ -29,36 +29,31 @@ L(M) &= b + (a + \lambda)(a + \lambda)^*b + (b + (a + \lambda)(a +
 \lambda)^*b)\\
 \end{align*}
 \section{Pumping Lemma}
-Proof by contradiction with assumption L is regular. Let i be the integer in the
-pumping lemma. Pick $z = 0^i1^i$. $\vert z \vert > i \land z \in L$. From the
-lemma, z = uvw, $\vert uv \vert \leq i \land \vert v \vert \geq 1$. Therefore, u
-and v contain only 0's. From the lemma, $y = uvvw \in L$. But y contains more
-0's than 1's. This is a contradiction since y should contain less (or equal) 0's
-than 1's, according to the definition of L.
-Thus L is not regular.
+Proof by contradiction with assumption $L \in RegL$. Let p be the pumping length
+of L. Pick $w = 0^p1^p \in L$. $\mid w \mid > p \implies \exists x, y, z :
+w = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v =
+xyyz \in L$. Therefore, x and y contain only 0's and v contains more
+0's than 1's. But from the definition of L, v should contain less (or equal) 0's
+than 1's. This is a contradiction. Thus $L \notin RegL$.
 \section{Pumping lemma}
-Proof by contradiction with assumption L is regular. Let i be the integer in
-the pumping lemma. Pick $z = a^ib(a^ib)^Ra^ib$. $\vert z \vert > i \land z \in
-L$. From the lemma, z = uvw, $\vert uv \vert \leq i \land \vert v \vert \geq 1
-\land \vert w \vert < 4i$. Therefore, u and v contain only a's but w contains
-a's and b's. From the lemma, $y = uv^{1000000i}w \in L$ and the first half of y
-are all a's. Also, $y = xx^Rx$, so x contains only a's, so u contains only a's.
-So the pumping process removed those b's! This is a contradiction.
-Thus L is not regular.
+Proof by contradiction with assumption $L \in RegL$. Let p be the pumping length
+of L. Pick $w = a^pb(a^pb)^Ra^pb \in L$. $\mid w \mid > i \implies \exists x, y,
+z: w = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v =
+xy^{10p}z \in L$. Therefore, x and y contain only a's and the first half of v
+contains only a's. From the definition of L, $v = tt^Rt$ so t contains only a's,
+so v contains only a's. But w contains b's so v contains b's. This is a
+contradiction. Thus $L \notin RegL$.
 \section{Regular language}
 \subsection{}
 \subsubsection{Statement}
 Not regular.
 \subsubsection{Proof}
-Proof by contradiction with assumption L is regular. Let i be the integer in the
-pumping lemma. Pick $z = 0^i1^i0^{2i}$. $\vert z \vert > i \land z \in L$. From
-the lemma, z = uvw, $\vert uv \vert \leq i \land \vert v \vert \geq 1$.
-Therefore, u and v contain only 0's and $w = 0^j1^i0^{2i}$. From
-the lemma, by pumping 0's, $y = uv^{2i}w \in L$. In y, there are more than 2i
-0's before those 1's and 2i 0's after those 1's. This is a contradiction since the number
-of 0's before 1's should be less than the number of 0's after 1's, according to
-the definition of L.
-Thus L is not regular.
+Proof by contradiction with assumption $L \in RegL$. Let p be the pumping length
+of L. Pick $w = 0^p1^p0^{2p} \in L$. $\mid w \mid > p \implies \exists x, y, z
+: w = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v =
+xz \in L$. Therefore, x and y contain only 0's and $ v = 0^q1^p0^{2p}$ where $q
+< p$. But from the definition of L, $q = 2p - p = p$. This is a contradiction.
+ Thus $L \notin RegL$.
 \subsection{}
 \subsubsection{Statement}
 Regular.
@@ -76,9 +71,9 @@ So L = K and L is regular.
 \subsubsection{Statement}
 Not regular.
 \subsubsection{Proof}
-Proof by contradiction with assumption L is regular. Let i be the number in
-pumping lemma. Pick $z = 0^{i+1}1^i \in L$. From the lemma, $z = uvw \land \vert
-uv \vert \leq i \land \vert v \vert \geq 1$, so u and v contain only 0's. From
-the lemma, $y = uw = 0^j1^i \in L$, where $j \leq i$. This is a contradiction
-since j should be greater than i, according to the definition of L.
+Proof by contradiction with assumption $L \in RegL$. Let p be the pumping length
+of L. Pick $w = 0^{p+1}1^p \in L$. $\mid w \mid > p \implies \exists x, y, z: w
+= xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v = xz \in L$.
+Therefore, x and y contain only 0's and $v = 0^q1^p$ where $q \leq p$. But from
+the definition of L, $q > p$. This is a contradiction. Thus $L \notin RegL$.
 \end{document}

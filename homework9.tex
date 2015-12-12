@@ -77,12 +77,10 @@ f_{5x} \in F_5
 \end{align*}
 From Kleene theorom, $L(M_3) = L_3 \land M_3$ is PDA $\implies L_3$ is CFL.
 \section{Pumping Lemma}
-Proof by contradiction with assumption L is CFL. Let n be the number in pumping
-lemma and $z = a^{2n}b^{3n}c^{4n}$. From the lemma, $z \in L \land \vert z
-\vert > n \implies \exists u, v, w, x, y$ such that $z = uvwxy \land \vert vwx
-\vert \leq n \land \vert vx \vert \geq 1 \land t =uwy \in L$.
-From the definition of L, vwx contains either 1 or 2 types of symbols from \{a, b, c\}. From z to t,
-either 1 or 2 types of symbols are removed, and the ratio of symbol count a:b:c
-is not longer 2:3:4. This is a contradiction with the definition of L because as
-$t \in L$, the ratio must be 2:3:4. Thus L is not CFL.
+Proof by contradiction with assumption $L \in CFL$. Let p be the pumping length
+of L. Pick $z = a^{2p}b^{3p}c^{4p} \in L$.$ \mid z \mid > p \implies \exists
+u, v, w, x, y: z = uvwxy \land \mid vwx \mid \leq p \land \mid vx \mid \geq 1
+\land t =uwy \in L$. Therefore, vwx contains either 1 or 2 types of symbols from
+\{a, b, c\}. In t, $\#a:\#b:\#c \neq 2:3:4$. But from the definition of L
+$\#a:\#b:\#c = 2:3:4$.  This is a contradiction, Thus $L \notin CFL$.
 \end{document}
