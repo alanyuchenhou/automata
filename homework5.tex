@@ -41,12 +41,11 @@ than 1's. This is a contradiction. Thus $L \notin Reg$.
 
 \section{Pumping lemma for Reg}
 Proof by contradiction with assumption $L \in Reg$. Let p be the pumping length
-of L. Pick $w = a^pb(a^pb)^Ra^pb \in L$. $\mid w \mid > i \implies \exists x, y,
-z: w = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v =
-xy^{10p}z \in L$. Therefore, x and y contain only a's and the first half of v
-contains only a's. From the definition of L, $v = tt^Rt$ so t contains only a's,
-so v contains only a's. But w contains b's so v contains b's. This is a
-contradiction. Thus $L \notin Reg$.
+of L. Pick $w = a^pb^pb^pa^pa^pb^p \in L$. $\mid w \mid > p \implies \exists
+x, y, z: w = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v =
+xz \in L$. Therefore, x and y contain only a's and $v = a^qb^pb^pa^pa^pb^p$
+where $q < p$. But from the definition of L, $q = p$. This is a contradiction.
+Thus $L \notin Reg$.
 
 \section{Reg}
 \subsection{}

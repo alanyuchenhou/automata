@@ -26,7 +26,7 @@ FA M' to accept $L^r$ as follows:
   \item create a new final state
   \item for every other final state, mark it as non-final state and and create
   a transition from it to the new final state
-  \item mark all final states initial states and the initial state final state
+  \item mark the final state initial state and the initial state final state
   \item reverse all transitions' directions
 \end{enumerate}
 FA M' accepts $L^r \implies L^r \in Reg$.
@@ -35,9 +35,11 @@ FA M' accepts $L^r \implies L^r \in Reg$.
 $L \in Reg \implies \exists$ FA M accepting L. We can construct FA M' to accept
 Prefix(L) as follows:
 \begin{enumerate}
-  \item on input x, M' runs M;
-  \item M' guesses y and continue to run M on y;
-  \item if M accepts xy, M' accepts x; otherwise M' rejects x;
+  \item run M on input x
+  \item at the end of x, guess y one symbol after another and continue to run M
+  on y;
+  \item at the end of y(guess), verify M accepts xy;
+  \item accept x
 \end{enumerate}
 FA M' accepts Prefix(L) $\implies Prefix(L) \in Reg$.
 
@@ -45,9 +47,13 @@ FA M' accepts Prefix(L) $\implies Prefix(L) \in Reg$.
 $L \in Reg \implies \exists$ FA M accepting L. We can construct FA M' to accept
 Half(L) as follows:
 \begin{enumerate}
-  \item on input x, M' runs M;
-  \item M' guesses y: $\mid x \mid = \mid y \mid$ and continue to run M on y;
-  \item if M accepts xy, M' accepts x; otherwise M' rejects x;
+  \item create 2 copies of M: $M_1, M_2$;
+  \item run $M_1$ on input x and run $M_2$ on y(guess) in synchronous ($M_1$
+  reads x at the same speed as $M_2$ reads y), but let $M_2$ start from the
+  state where $M_1$ will end up with after its run on x(guess);
+  \item at the end of x, verify $M_1$ ends up at $M_2$'s initial state and $M_2$
+  accepts y;
+  \item accept x
 \end{enumerate}
 FA M' accepts Half(L) $\implies Half(L) \in Reg$.
 \end{document}

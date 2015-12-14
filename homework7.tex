@@ -51,19 +51,22 @@ A &\to 0A | 0\\
 C &\to 1C | 1\\
 B &\to 00B1 | \lambda
 \end{align*}
+
 \section{Chomsky normal form: eliminate $\lambda$ rules}
-Nullables: A, B.
+Nullables: A, B, S
 \begin{align*}
-S &\to ASB | SB | AS | AB | B | A | ab | \lambda \\
-A &\to AS | S | a \\
-B &\to SB | S | A | b
+S &\to ASB | SB | AS | AB | B | A | S | ab | \\
+A &\to AS | S | A | a \\
+B &\to SB | S | B | A | b
 \end{align*}
+
 \section{Chomsky normal form: eliminate unit rules}
 \begin{align*}
 S &\to a | SA | SB | b | SB | ab \\
 A &\to a | SA \\
 B &\to a | SA | SB | b
 \end{align*}
+
 \section{Chomsky normal form}
 \begin{align*}
 S_0 &\to S\\

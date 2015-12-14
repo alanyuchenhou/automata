@@ -13,10 +13,10 @@
 
 \section{DPDA construction}
 \begin{align*}
-\delta(q_0, 0, Z) =& \{(q_1, aaaZ)\}\\
-\delta(q_1, 0, a) =& \{(q_1, aaaa)\}\\
-\delta(q_1, 1, a) =& \{(q_2, \Lambda)\}\\
-\delta(q_2, 1, a) =& \{(q_2, \Lambda)\}\\
+\delta(q_0, 0, Z) =& \{(q_1, 000Z)\}\\
+\delta(q_1, 0, 0) =& \{(q_1, 0000)\}\\
+\delta(q_1, 1, 0) =& \{(q_2, \Lambda)\}\\
+\delta(q_2, 1, 0) =& \{(q_2, \Lambda)\}\\
 \delta(q_2, \Lambda, Z) =& \{(q_f, Z)\}
 \end{align*}
 
@@ -43,9 +43,10 @@
 \section{PDA construction}
 We can construct PDA M' to accept Prefix(L). M' works as follows:
 \begin{enumerate}
-  \item on imput x, run M;
-  \item guess y and continue to run M on y;
-  \item if M accepts xy, accept x; otherwise reject x;
+  \item run M on imput x;
+  \item at the end of x, guess y symbol by symbol and continue to run M on y;
+  \item at the end of y(guess), verify M accepts xy;
+  \item accept x;
 \end{enumerate}
 
 \section{PDA construction}

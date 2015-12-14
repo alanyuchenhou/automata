@@ -17,7 +17,7 @@
 L \in RE &\implies \exists TM \ M_1 \ accepting \ L \\
 \overline{L} \in RE &\implies \exists TM \ M_2 \ accepting \ \overline{L}
 \end{align*}
-We can construct TM M to recognize L:
+We can construct TM M to recognize L as follows:
 \begin{enumerate}
   \item run $M_1, M_2$ in parallel on input w
   \item if $M_1 $ accepts w ($\iff w \in L$), accept w
@@ -33,12 +33,8 @@ RE$. From the previous proof, $L \in RE \land \overline{L} \in RE \implies L
 under complement.
 
 \section{R closure property: complement}
-$\forall L \in R \ \exists TM \ M$ recognizing L:
-\begin{enumerate}
-  \item $\forall w \in L$, M accepts w
-  \item $\forall w \notin L$, M rejects w
-\end{enumerate}
-Now we construct TM M' to recognize $\overline{L}$:
+$\forall L \in R \ \exists TM \ M$ recognizing L. We can construct TM M' to
+recognize $\overline{L}$ as follows:
 \begin{enumerate}
   \item run M on input w
   \item if M accepts w($\iff w \in L \iff w \notin \overline{L}$), reject w
@@ -62,9 +58,9 @@ decidable.
 
 \section{R and decidable problem}
 The problem is equivalent to L = \{M: $\exists TM \ M'$ containing the same
-number of L-instructions and R-instructions and L(M') = L(M)\}. $\exists \ TM N$
-recognizing L: a TM accepting any input! Because $\forall M, \ M \in L$. We can
-construct TM M' using the method to construct equivalent TM demonstrated in
+number of L-instructions and R-instructions and L(M') = L(M)\}. $\exists \ TM \
+N$ recognizing L: a TM accepting any input! Because $\forall M, \ M \in L$. We
+can construct TM M' using the method to construct equivalent TM demonstrated in
 problem 3: keep adding garbage L-instructions or R-instructions till M' contains
 the same number of L-instructions and R-instructions. TM N recognizes $L
 \implies L \in R$. Thus the problem is decidable.

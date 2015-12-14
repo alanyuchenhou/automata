@@ -44,11 +44,11 @@ L_2 \in Reg \implies \exists FA \ M_2 \ accepting \ L_2
 \end{align*}
 We can construct PDA $M_3 \ to \ accept \ L_3$ as follows:
 \begin{enumerate}
-  \item in stage 1, run $M_1$, read every symbol $\sigma$ in x, feed $\sigma$
-  to $M_1$ and push $\sigma$ on stack;
+  \item in stage 1, run $M_1$ on input x, and push every symbol of x on stack;
   \item at the end of x(guess), verify $M_1$ accepts x, and enter stage 2;
-  \item in stage 2, run $M_2$, read every symbol $\sigma$ in $x^r$, feed
-  $\sigma$ to $M_2$, pop $\sigma_1$ off stack and verify $\sigma = \sigma_1$;
+  \item in stage 2, run $M_2$ on input $x^r$ and pop stack in
+  synchronous(reading $x^r$ at the same speed as poping stack) and verify the
+  symbol read always equals the symbol popped;
   \item at the end of input, verify $M_2$ accepts $x^r$;
   \item accept input
 \end{enumerate}

@@ -11,7 +11,7 @@
 \author{Yuchen Hou}
 \maketitle
 
-\section{REL to TM}
+\section{RE to TM}
 \begin{align*}
 \gamma &\in \{b, c\}\\
 \delta(q_0, \gamma) &= (q_1, \gamma, R) \text{ // find 1 b or c}\\
@@ -22,7 +22,7 @@
 \delta(q_3, B) &= (q_f, B, S) \text{ // and reach the end, accept input}
 \end{align*}
 
-\section{REL to TM}
+\section{RE to TM}
 \begin{align*}
 \gamma &= \{a, b\}\\
 \gamma_1 &= \{a, b, \#\}\\
@@ -73,6 +73,6 @@ To initialize M', store input on stack 2 as follows:
 \delta(q_{-2}, \gamma_3, \gamma_1, Z) &= (q_{-2}, \gamma_3 \gamma_1, Z)\\
 \delta(q_{-2}, \Lambda, \gamma_1, Z) &= (q_{-1}, \gamma_1, Z)\\
 \delta(q_{-1}, \Lambda, \gamma_1, \gamma_2) &= (q_{-1}, \Lambda, \gamma_1 \gamma_2)\\
-\delta(q_{-1}, \Lambda, Z, \gamma_2) &= (q_0, \Lambda, Z \gamma_2)
+\delta(q_{-1}, \Lambda, Z, \gamma_2) &= (q_0, Z, \gamma_2)
 \end{align*}
 \end{document}
