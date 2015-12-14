@@ -10,91 +10,44 @@
 \title{CS317 homework 6}
 \author{Yuchen Hou}
 \maketitle
+
 \section{Minimal finite automaton}
 Figure Attached.
-\section{Closure property: union, intersection, negation}
-Construct finite automaton $M = M_1 \cap \overline{M_2} \cup \overline{M_1}
-\cap M_2$. If $L(M) \neq \emptyset$, an x exists; otherwise, no x can exist. The
-union, intersection and negation methods have been formulated in class.
-\section{Closure property: reverse}
-From Kleene theorem, L is regular $\iff \exists$ finite automaton M =
-($\Sigma, Q, q_0, \delta, F$) and M accepts L. We can convert M into another
-finite automaton to accept $L^r$ with the following reverse method:
-\begin{lstlisting}
-class FiniteAutomaton M {
-	Set<Char> Sigma; // set of characters
-	Set<State> Q; // set of states
-	State q0; // initial state
-	Map<(State, State), Char> delta; // transition function
-	Set<State> F; // set of final states
 
-	void reverse() {
-		State newAcceptingState = new State();
-		for (State q: F) {
-			delta.put((q, newAcceptingState), lambda);
-		}
-		F.clear();
-		F.add(newAcceptingState);
-		Q.add(newAcceptingState);
-		State newInitialState = F.iterator().next();
-		F.clear();
-		F.add(q0);
-		q0 = newInitialState;
-		delta.reverseAllTransitionDirections();
-	}
-}
-\end{lstlisting}
-$\forall x \in L$, $M^r$ accepts $x^r$. Therefore, finite automaton $M^r$
-accepts $L^r$. From Kleene theorem, $L^r$ is regular.
-\section{Closure property: prefix}
-From Kleene theorem, L is regular $\iff \exists$ finite automaton M =
-($\Sigma, Q, q_0, \delta, F$) and M accepts L. We can convert M into another
-finite automaton to accept Prefix(L) with the following prefix method:
-\begin{lstlisting}
-class FiniteAutomaton M {
-	Set<Char> Sigma; // set of characters
-	Set<State> Q; // set of states
-	State q0; // initial state
-	Map<(State, State), Char> delta; // transition function
-	Set<State> F; // set of final states
+\section{Reg closure property: union, intersection, negation}
+Construct finite automaton $M = M_1 \times \overline{M_2} \cup \overline{M_1}
+\times M_2$. If $L(M) \neq \emptyset$, an x exists; otherwise, no x can exist.
+The union, intersection and negation methods have been formulated in class.
 
-	void prefix() {
-		State newAcceptingState = new State();
-		for (State q: Q) {
-			if (q.hasPathToAnAcceptingState() {
-				delta.put((q, newAcceptingState), lambda);
-			}
-		}
-		F.add(newAcceptingState);
-		Q.add(newAcceptingState);
-	}
-}
-\end{lstlisting}
-Finite automaton M can be converted into a new automaton to accept Prefix(L)
-using the prefix method. From Kleene theorem, Prefix(L) is regular.
-\section{Closure property: half}
-From previous 2 answers, if L is regular, Prefix(L) and Prefix($L^r$) are
-both regular, and there are finite automata $M_0, M_1, M_2$ that accept
-them:
-\begin{align*}
-L =& L(M)\\
-Prefix(L) =& L(M_1)\\
-Prefix(L^r) =& L(M_2)
-\end{align*}
-Now the idea is to build an FA $M_4$ to accept half(L), by using $M_1$ to read
-x in forward order and using $M_2$ to read every suffix y of L with the same
-length as x in backward order. If $M_1, M_2$ ever once run into a same accepting
-state then $M_4$ should accept x. Essentially, this is a bidirectional search
-on the graph representation of $M$: $M_1$ starts from initial state and
-take actions based on input characters from x, while $M_2$ starts from final
-state and do breadth first search, maintaining the speed so that the search
-depth equals the number of actions taken by $M1$. Upon $M_1$ finishes reading x,
-stop the search and check if $M_1$ is in one of $M_2$'s frontier states. If yes,
-then x already satisfies the condition and must be in half(L). To formally
-construct $M_4$, we need to convert $M_2$ into $M_3$: for every transition
-$\delta(q_1, \sigma) = q_2$ in $M_2$, where $\sigma \neq \lambda$, add
-transitions $\delta(q_1, \sigma_i) = q_2, \forall \sigma_i \in \Sigma$ to $M_2$
-and then convert it to a deterministic finite automaton $M_3$. Now $M_3$ can
-read x and do breadth first search. Finally, we can construct a finite automaton
-$M_4 = M_1 \cap M_3$, which accepts half(L). From Kleene theorem, half(L) is regular.
+\section{Reg closure property: reverse}
+$L \in Reg \implies \exists$ FA M accepting L. We can convert M into another
+FA M' to accept $L^r$ as follows:
+\begin{enumerate}
+  \item create a new final state
+  \item for every other final state, mark it as non-final state and and create
+  a transition from it to the new final state
+  \item mark all final states initial states and the initial state final state
+  \item reverse all transitions' directions
+\end{enumerate}
+FA M' accepts $L^r \implies L^r \in Reg$.
+
+\section{Reg closure property: prefix}
+$L \in Reg \implies \exists$ FA M accepting L. We can construct FA M' to accept
+Prefix(L) as follows:
+\begin{enumerate}
+  \item on input x, M' runs M;
+  \item M' guesses y and continue to run M on y;
+  \item if M accepts xy, M' accepts x; otherwise M' rejects x;
+\end{enumerate}
+FA M' accepts Prefix(L) $\implies Prefix(L) \in Reg$.
+
+\section{Reg closure property: half}
+$L \in Reg \implies \exists$ FA M accepting L. We can construct FA M' to accept
+Half(L) as follows:
+\begin{enumerate}
+  \item on input x, M' runs M;
+  \item M' guesses y: $\mid x \mid = \mid y \mid$ and continue to run M on y;
+  \item if M accepts xy, M' accepts x; otherwise M' rejects x;
+\end{enumerate}
+FA M' accepts Half(L) $\implies Half(L) \in Reg$.
 \end{document}

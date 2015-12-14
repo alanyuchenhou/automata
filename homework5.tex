@@ -10,9 +10,11 @@
 \title{CS317 homework 5}
 \author{Yuchen Hou}
 \maketitle
-\section{Language to automaton}
+
+\section{Regex to FA}
 Figure Attached.
-\section{Automaton to language}
+
+\section{FA to Regex}
 \begin{align*}
 R(i,j,k) &= R(i,j,k-1) + R(i,k,k-1)R(k,k,k-1)^*R(k,j,k-1)\\
 L(M) &= R(1,2,2) = R(1,2,1) + R(1,2,1)R(2,2,1)^*R(2,2,1)\\
@@ -28,52 +30,53 @@ L(M) &= b + (a + \lambda)(a + \lambda)^*b + (b + (a + \lambda)(a +
 \lambda)^*b)((c + \lambda) + b(a + \lambda)^*b)^*((c + \lambda) + b(a +
 \lambda)^*b)\\
 \end{align*}
-\section{Pumping Lemma}
-Proof by contradiction with assumption $L \in RegL$. Let p be the pumping length
+
+\section{Pumping Lemma for Reg}
+Proof by contradiction with assumption $L \in Reg$. Let p be the pumping length
 of L. Pick $w = 0^p1^p \in L$. $\mid w \mid > p \implies \exists x, y, z :
 w = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v =
 xyyz \in L$. Therefore, x and y contain only 0's and v contains more
 0's than 1's. But from the definition of L, v should contain less (or equal) 0's
-than 1's. This is a contradiction. Thus $L \notin RegL$.
-\section{Pumping lemma}
-Proof by contradiction with assumption $L \in RegL$. Let p be the pumping length
+than 1's. This is a contradiction. Thus $L \notin Reg$.
+
+\section{Pumping lemma for Reg}
+Proof by contradiction with assumption $L \in Reg$. Let p be the pumping length
 of L. Pick $w = a^pb(a^pb)^Ra^pb \in L$. $\mid w \mid > i \implies \exists x, y,
 z: w = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v =
 xy^{10p}z \in L$. Therefore, x and y contain only a's and the first half of v
 contains only a's. From the definition of L, $v = tt^Rt$ so t contains only a's,
 so v contains only a's. But w contains b's so v contains b's. This is a
-contradiction. Thus $L \notin RegL$.
-\section{Regular language}
+contradiction. Thus $L \notin Reg$.
+
+\section{Reg}
 \subsection{}
 \subsubsection{Statement}
 Not regular.
 \subsubsection{Proof}
-Proof by contradiction with assumption $L \in RegL$. Let p be the pumping length
+Proof by contradiction with assumption $L \in Reg$. Let p be the pumping length
 of L. Pick $w = 0^p1^p0^{2p} \in L$. $\mid w \mid > p \implies \exists x, y, z
 : w = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v =
 xz \in L$. Therefore, x and y contain only 0's and $ v = 0^q1^p0^{2p}$ where $q
 < p$. But from the definition of L, $q = 2p - p = p$. This is a contradiction.
- Thus $L \notin RegL$.
+ Thus $L \notin Reg$.
 \subsection{}
 \subsubsection{Statement}
 Regular.
 \subsubsection{Proof}
-This language has a regular expression $r = 0^4(00)^*$.
-Thus L is regular.
+Construct Regex $r = 0^4(00)^*$ to represent Reg L.
 \subsection{}
 \subsubsection{Statement}
 Regular.
 \subsubsection{Proof}
-Regular language $K = \{(0+1)^*\} $ is a subset of L (when x = $\lambda$).
-However, as $\Sigma = \{0, 1\}$. L must also be a subset of K.
-So L = K and L is regular.
+Construct Regex $K = (0+1)^*$ to represent Reg L'. $L \subset L' \land L'
+\subset L$ (when x = $\lambda$). So L = L', and $L \in Reg$.
 \subsection{}
 \subsubsection{Statement}
 Not regular.
 \subsubsection{Proof}
-Proof by contradiction with assumption $L \in RegL$. Let p be the pumping length
+Proof by contradiction with assumption $L \in Reg$. Let p be the pumping length
 of L. Pick $w = 0^{p+1}1^p \in L$. $\mid w \mid > p \implies \exists x, y, z: w
 = xyz \land \mid xy \mid \leq p \land \mid y \mid \geq 1 \land v = xz \in L$.
 Therefore, x and y contain only 0's and $v = 0^q1^p$ where $q \leq p$. But from
-the definition of L, $q > p$. This is a contradiction. Thus $L \notin RegL$.
+the definition of L, $q > p$. This is a contradiction. Thus $L \notin Reg$.
 \end{document}

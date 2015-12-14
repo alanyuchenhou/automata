@@ -10,58 +10,53 @@
 \title{CS317 homework 8}
 \author{Yuchen Hou}
 \maketitle
-\section{Deterministic pushdown automaton}
+
+\section{DPDA construction}
 \begin{align*}
-Q =& \{q_0, q_1, q_2\}\\
-\Sigma =& \{0, 1\}\\
-\Gamma =& \{a, Z\}\\
-A =& \{q_2\}\\
-\delta(q_0, 0, Z) =& \{(q_0, aaaZ)\}\\
-\delta(q_0, 0, a) =& \{(q_0, aaaa)\}\\
-\delta(q_0, 1, a) =& \{(q_1, \Lambda)\}\\
-\delta(q_1, 1, a) =& \{(q_1, \Lambda)\}\\
-\delta(q_1, \Lambda, Z) =& \{(q_2, Z)\}
+\delta(q_0, 0, Z) =& \{(q_1, aaaZ)\}\\
+\delta(q_1, 0, a) =& \{(q_1, aaaa)\}\\
+\delta(q_1, 1, a) =& \{(q_2, \Lambda)\}\\
+\delta(q_2, 1, a) =& \{(q_2, \Lambda)\}\\
+\delta(q_2, \Lambda, Z) =& \{(q_f, Z)\}
 \end{align*}
-\section{Deterministic pushdown automaton}
+
+\section{DPDA construction}
 \begin{align*}
-Q =& \{q_0, q_2\}\\
-\Sigma =& \{0, 1\}\\
-\Gamma =& \{0, 1, Z\}\\
-A =& \{q_2\}\\
-\delta(q_0, x, Z) =& \{(q_0, xZ)\}, x \in \Sigma\\
+\gamma \in& \{0, Z\}\\
+\delta(q_0, 0, Z) =& \{(q_0, 0 Z)\}\\
+\delta(q_0, 1, Z) =& \{(q_0, 1 Z)\}\\
 \delta(q_0, 0, 0) =& \{(q_0, 00)\}\\
 \delta(q_0, 1, 0) =& \{(q_0, \Lambda)\}\\
 \delta(q_0, 0, 1) =& \{(q_0, \Lambda)\}\\
 \delta(q_0, 1, 1) =& \{(q_0, 11)\}\\
-\delta(q_0, \Lambda, x) =& \{(q_2, x)\}, x \in \{0, Z\}
+\delta(q_0, \Lambda, \gamma) =& \{(q_f, \gamma)\}
 \end{align*}
-\section{Deterministic pushdown automaton}
+
+\section{DPDA construction}
 \begin{align*}
-Q =& \{q_0, q_2\}\\
-\Sigma =& \{0, 1\}\\
-\Gamma =& \{a, Z\}\\
-A =& \{q_2\}\\
-\delta(q_0, 0, x) =& \{(q_0, ax)\}, x \in \Gamma\\
-\delta(q_0, 1, a) =& \{(q_0, \Lambda)\}\\
-\delta(q_0, \Lambda, x) =& \{(q_2, x)\}, x \in \Gamma
+\gamma \in& \Gamma\\
+\delta(q_0, 0, \gamma) =& \{(q_0, 0\gamma)\}\\
+\delta(q_0, 1, 0) =& \{(q_0, \Lambda)\}\\
+\delta(q_0, \Lambda, \gamma) =& \{(q_f, \gamma)\}
 \end{align*}
-\section{Pushdown automaton}
-Let $M = (Q, \Sigma, \Gamma, \delta, q_0, Z, A)$. Let a be a member of A. We
-can convert M into M' by adding extra transitions in $\delta$: for every
-transition $\delta(q, \sigma, \gamma)$, add $(a, \gamma)$ into $\delta(q,
-\Lambda, \gamma) $.
-\section{Pushdown automaton}
+
+\section{PDA construction}
+We can construct PDA M' to accept Prefix(L). M' works as follows:
+\begin{enumerate}
+  \item on imput x, run M;
+  \item guess y and continue to run M on y;
+  \item if M accepts xy, accept x; otherwise reject x;
+\end{enumerate}
+
+\section{PDA construction}
 \begin{align*}
-Q =& \{q_0, q_2\}\\
-\Sigma =& \{a, b, c\}\\
-\Gamma =& \{-, +, Z\}\\
-A =& \{q_2\}\\
+\gamma \in& \{a, b\}\\
 \delta(q_0, c, Z) =& \{(q_0, -Z)\}\\
-\delta(q_0, x, Z) =& \{(q_0, +Z)\}, x \in \{a, b\}\\
+\delta(q_0, \gamma, Z) =& \{(q_0, +Z)\}\\
 \delta(q_0, c, -) =& \{(q_0, --)\}\\
-\delta(q_0, x, -) =& \{(q_0, \Lambda)\}, x \in \{a, b\}\\
+\delta(q_0, \gamma, -) =& \{(q_0, \Lambda)\}\\
 \delta(q_0, c, +) =& \{(q_0, \Lambda)\}\\
-\delta(q_0, x, +) =& \{(q_0, ++)\}, x \in \{a, b\}\\
+\delta(q_0, \gamma, +) =& \{(q_0, ++)\}\\
 \delta(q_0, \Lambda, Z) =& \{(q_2, Z)\}
 \end{align*}
 \end{document}

@@ -13,83 +13,59 @@
 
 \section{RE}
 \subsection{RE vs R}
-We have the following observations:
 \begin{align*}
-L \in RE &\implies \exists TM \ M_1 : L = L(M_1) \\
-\overline{L} \in RE &\implies \exists TM \ M_2 : \overline{L} = L(M_2)
+L \in RE &\implies \exists TM \ M_1 \ accepting \ L \\
+\overline{L} \in RE &\implies \exists TM \ M_2 \ accepting \ \overline{L}
 \end{align*}
-Now we construct TM M to recognize L:
+We can construct TM M to recognize L:
 \begin{enumerate}
-  \item $\forall$ input w, M runs $M_1$ and $M_2$ in parallel on w
-  \item if $M_1 $ accepts w($\iff w \in L$), M accepts w
-  \item if $M_2$ accepts w($\iff w \in \overline{L} \iff w \notin L $), M
-  rejects w
+  \item run $M_1, M_2$ in parallel on input w
+  \item if $M_1 $ accepts w ($\iff w \in L$), accept w
+  \item if $M_2$ accepts w($\iff w \in \overline{L} \iff w \notin L $),
+  reject w
 \end{enumerate}
-M recognizes L $\implies L \in R$.
+TM M recognizes $L \implies L \in R$.
 \subsection{RE closure property}
-Proof by contradiction with assumption: REs are closed under complement. Pick
-L, such that $L \in RE \land L\notin R$. From the assumption, $\overline{L} \in
+Proof by contradiction with assumption REs are closed under complement. Pick
+$L \in RE \land L\notin R$. From the assumption, $\overline{L} \in
 RE$. From the previous proof, $L \in RE \land \overline{L} \in RE \implies L
-\in R$, which contradicts $L\notin R$. Therefore, REs are not closed under
-complement.
+\in R$. But $L\notin R$. This is a contradiction. Thus REs are not closed
+under complement.
 
 \section{R closure property: complement}
-$\forall L \in R \ \exists TM \ M$ such that M recognizes L, which means:
+$\forall L \in R \ \exists TM \ M$ recognizing L:
 \begin{enumerate}
   \item $\forall w \in L$, M accepts w
   \item $\forall w \notin L$, M rejects w
 \end{enumerate}
-Now we construct TM N to recognize $\overline{L}$:
+Now we construct TM M' to recognize $\overline{L}$:
 \begin{enumerate}
-  \item $\forall w$ N copies it to the tape of M
-  \item N runs M
-  \item if M accepts w($\iff w \in L \iff w \notin \overline{L}$), N rejects w
-  \item if M rejects w($\iff w \notin L \iff w \in \overline{L}$), N accepts w
+  \item run M on input w
+  \item if M accepts w($\iff w \in L \iff w \notin \overline{L}$), reject w
+  \item if M rejects w($\iff w \notin L \iff w \in \overline{L}$), accept w
 \end{enumerate}
-As N accepts $\overline{L}$ and always halts, $\overline{L} \in R$. As $\forall
-L \in R \ \overline{L} \in R$, Rs are closed under complement.
+TM M' recognizes $\overline{L} \implies \overline{L} \in R$. Thus Rs are closed
+under complement.
 
 \section{Equivalent Turing machines}
-For any TM M, we can get a new TM N such that L(M) = L(N), by modifying M this
-way:
-\begin{enumerate}
-  \item create a state $q \notin Q$
-  \item add transition $\delta(q_0, \gamma) = (q, \gamma, S)$
-  \item add transition $\delta(q, \gamma) = (q_0, \gamma, S)$
-\end{enumerate}
-where $\gamma \in \Gamma$. Then by repeating this modification we can get
-infinitely many TMs such that they all accept the same language. This means
-there are infinite number of equivalent programs to any program (a trivial
-example is programs that differ only in comments).
+$\forall$ TM M accepting L, we can construct a new TM M' accepting L, by adding
+a new garbage transition to M: $\delta(q, \gamma) = (q, \gamma, S)$ where $q
+\notin Q \land \gamma \in \Gamma$. By repeating this modification we can get
+infinitely many different TMs accepting L. This means there are infinite many
+equivalent programs to any program (e.g. programs that differ only in comments).
 
 \section{R and decidable problem}
-To prove the problem is decidable, it is equivalent to prove:
-L = \{M: M is TM and M contains the same number of L-instructions and
-R-instructions\} is R. Now we construct a counter machine N to recognize L:
-\begin{enumerate}
-  \item N has 2 counters: x and y
-  \item N reads the encoding of M: for each R-instruction, increment x by 1; for
-  each L-instruction, increment y by 1;
-  \item after reading the encoding of M, N repeatedly decrements x and y by 1
-  and test them against 0;
-  \item when x is 0, if y is 0, N accepts input; if y is not 0, N rejects input;
-\end{enumerate}
-Therefore, N (and a equivalent TM) recognizes L. Then L is R and the problem is
+The problem is equivalent to L = \{M: TM M contains the same number of
+L-instructions and R-instructions\}. From homework 8 problem 2 $\exists PDA \ M'
+\ accepting \ L \implies L \in CFL \implies L \in R$. Thus the problem is
 decidable.
 
 \section{R and decidable problem}
-To prove the problem is decidable, it is equivalent to prove:
-L = \{M: M is TM and there is a TM M' such that M' contains the same number of
-L-instructions and R-instructions and L(M') = L(M)\} is R. Now we construct a TM
-$M_0$ to recognize L:
-\begin{enumerate}
-  \item construct TM $M_1$ to recognize R $L_1$ = \{M: M is TM and L(M') =
-  L(M)\}
-  \item construct TM $M_2$ to recognize R $L_2$ = \{M: M is TM and M contains
-  the same number of L-instructions and R-instructions\}
-  \item From the closure property of R, $L_3 = L_1 \cap L_2 \in R$
-  \item $\forall M$, if $L_3$ is not empty, $M_0$ accepts M, otherwise $M_0$
-  rejects M
-\end{enumerate}
-Therefore $M_0$ recognizes L, and L is R and the problem is decidable.
+The problem is equivalent to L = \{M: $\exists TM \ M'$ containing the same
+number of L-instructions and R-instructions and L(M') = L(M)\}. $\exists \ TM N$
+recognizing L: a TM accepting any input! Because $\forall M, \ M \in L$. We can
+construct TM M' using the method to construct equivalent TM demonstrated in
+problem 3: keep adding garbage L-instructions or R-instructions till M' contains
+the same number of L-instructions and R-instructions. TM N recognizes $L
+\implies L \in R$. Thus the problem is decidable.
 \end{document}

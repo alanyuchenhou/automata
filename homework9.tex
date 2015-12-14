@@ -10,72 +10,50 @@
 \title{CS317 homework 9}
 \author{Yuchen Hou}
 \maketitle
+
 \section{CFG to PDA}
-Using empty stack acceptance.
 \begin{align*}
-\delta(q_0, \Lambda, Z) =& \{(q, SZ)\}\\
-\delta(q, *, *) =& \{(q, \Lambda)\}, * \in \Sigma\\
-\delta(q, \Lambda, S) =& \{(q, aaB), (q, bbA), (q, AB), (q, aabb) \}\\
-\delta(q, \Lambda, A) =& \{(q, BA), (q, aB), (q, a) \}\\
-\delta(q, \Lambda, B) =& \{(q, AB), (q, bA), (q, b) \}\\
-\delta(q, \Lambda, Z) =& \{(q, \Lambda)\}
+\sigma \in& \Sigma\\
+\delta(q_0, \Lambda, Z) =& \{(q_1, SZ)\}\\
+\delta(q_1, \sigma, \sigma) =& \{(q_1, \Lambda)\}\\
+\delta(q_1, \Lambda, S) =& \{(q_1, aaB), (q_1, bbA), (q_1, AB), (q_1, aabb) \}\\
+\delta(q_1, \Lambda, A) =& \{(q_1, BA), (q_1, aB), (q_1, a) \}\\
+\delta(q_1, \Lambda, B) =& \{(q_1, AB), (q_1, bA), (q_1, b) \}\\
+\delta(q_1, \Lambda, Z) =& \{(q_f, \Lambda)\}
 \end{align*}
+
 \section{PDA to CFG}
 \begin{align*}
-S &\to [q_0, Z, q_*]\\
-[q_0, 1, q_*] &\to \Lambda [q_{even}, 1, q_*] \\
-[q_0, 1, q_*] &\to \Lambda [q_{odd}, 1, q_*] \\
-[q_0, 0, q_*] &\to \Lambda [q_{even}, 0, q_*] \\
-[q_0, 0, q_*] &\to \Lambda [q_{odd}, 0, q_*] \\
-[q_{odd}, \gamma_*, q_*] &\to \sigma_* [q_{even}, \gamma_*, q_*]\\
+q, q_1, q_2 &\in Q\\
+\gamma_1, \gamma_2 &\in \Gamma\\
+S &\to [q_0, Z, q]\\
+[q_0, \gamma_2, q] &\to \gamma_1[q_0, \gamma_1, q_1][q_1, \gamma_2, q]\\
+[q_0, 1, q] &\to \Lambda [q_{even}, 1, q] | \Lambda [q_{odd}, 1, q] \\
+[q_0, 0, q] &\to \Lambda [q_{even}, 0, q] | \Lambda [q_{odd}, 0, q] \\
+[q_{odd}, \gamma_2, q] &\to \gamma_1 [q_{even}, \gamma_2, q]\\
 [q_{even}, 1, q_{even}] &\to 1\\
 [q_{even}, 0, q_{even}] &\to 0\\
 [q_{even}, Z, q_{2}] &\to \Lambda\\
-[q_{0}, Z, q_{2}] &\to \Lambda\\
-q_* &\in Q\\
-\gamma_* &\in \Gamma\\
-\sigma_* &\in \Sigma
+[q_{0}, Z, q_{2}] &\to \Lambda
 \end{align*}
-\section{Closure: concatenation, reversal}
-Let $L_4 = L_2^r$. Then $x^r \in L_2 \iff x \in L_4$. Then
+
+\section{PDA construction}
 \begin{align*}
-L_3
-&= \{xx^r : x \in L_1 \land x^r \in L_2\}\\
-&= \{xx^r : x \in L_1 \land x \in L_4\}\\
-&= \{xx^r : x \in L_1 \cap L_4\}\\
-L5 &:= L_1 \cap L_4\\
-L_3
-&= \{xx^r : x \in L_5\}
+L_1 \in Reg \implies \exists FA \ M_1 \ accepting \ L_1\\
+L_2 \in Reg \implies \exists FA \ M_2 \ accepting \ L_2
 \end{align*}
-From the reversal closure of RLs, $L_2$ is regular $\implies L_4 =
-L_2^r$ is RL. From the intersection closure of RLs, $L_1,
-L_4$ are RLs $\implies L5 = L_1 \cap L_4$ is RL $\implies
-\exists$ FA $M_5$ such that $ L(M_5) = L_5$. Next we construct PDA $M_3$ based
-on FA $M_5$ such that $L(M_3) = L_3$. Intuitively, in stage 1, $M_3$ reads every
-$\sigma$ in $x$, sends it to $M_5$ and also pushes it to stack; at the end of
-x, $M_5$ accpets $x$, and $M_3$ enters stage 2; in stage 2, $M_3$ reads every
-symbol $\sigma_1$ in $x^r$ and pops every symbol $\sigma_2$ and ensures every
-pair has $\sigma_1 = \sigma_2$; at the end of stage 2, $M_3$ pops Z to accept by
-empty stack. A formal construction for $M_3$ is :
+We can construct PDA $M_3 \ to \ accept \ L_3$ as follows:
 \begin{enumerate}
-  \item for each transition $\delta(q_{5x}, \sigma) = \{q_{5y}\}$ in $M_5$, add
-  transition $\delta(q_{3x}, \sigma_x, \sigma_y) = \{q_{3y}, \sigma_x
-  \sigma_y\}$
-  \item for each final state $f_{5x}$ in $M_5$, add transition $\delta(q_{3x},
-  \Lambda, \sigma_x) = \{q_{32}, \sigma_x\}$
-  \item for each input symbol $\sigma_x$ in $\Sigma$, add transition
-  $\delta(q_{32}, \sigma_x, \sigma_x) = \{q_{32}, \Lambda\}$
-  \item add transition $\delta(q_{32}, \Lambda, Z) = \{q_{32}, \Lambda\}$
+  \item in stage 1, run $M_1$, read every symbol $\sigma$ in x, feed $\sigma$
+  to $M_1$ and push $\sigma$ on stack;
+  \item at the end of x(guess), verify $M_1$ accepts x, and enter stage 2;
+  \item in stage 2, run $M_2$, read every symbol $\sigma$ in $x^r$, feed
+  $\sigma$ to $M_2$, pop $\sigma_1$ off stack and verify $\sigma = \sigma_1$;
+  \item at the end of input, verify $M_2$ accepts $x^r$;
+  \item accept input
 \end{enumerate}
-where
-\begin{align*}
-q_{5x}, q_{5y} &\in Q_5\\
-q_{32}, q_{3x}, q_{3y} &\in Q_3\\
-\sigma_x, \sigma_y &\in \Sigma\\
-\sigma_x, \sigma_y &\in \Gamma\\
-f_{5x} \in F_5
-\end{align*}
-From Kleene theorom, $L(M_3) = L_3 \land M_3$ is PDA $\implies L_3$ is CFL.
+PDA $M_3 \ accepts \ L_3 \implies L_3 \in CFL$.
+
 \section{Pumping Lemma}
 Proof by contradiction with assumption $L \in CFL$. Let p be the pumping length
 of L. Pick $z = a^{2p}b^{3p}c^{4p} \in L$.$ \mid z \mid > p \implies \exists
